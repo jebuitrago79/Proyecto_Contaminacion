@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Análisis de PM25, CO y PM10</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding-top: 30px; }
+        img { max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px; }
+        h2, h3 { margin-top: 40px; }
+        .r2-box { background-color: #f8f9fa; padding: 10px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mb-4">📊 Visualización y Regresión de Emisiones</h1>
+
+    <h2>🔢 R² de Regresiones</h2>
+    <div class="row">
+        {% for key, value in r2_scores.items() %}
+        <div class="col-md-4">
+            <div class="r2-box text-center shadow-sm p-3 mb-3">
+                <h5>{{ key }}</h5>
+                <p class="display-6">{{ value }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2>📈 Gráficas Generadas</h2>
+    <h4>Matriz de Correlación</h4>
+    <img src="{{ imagenes.heatmap }}" alt="Matriz de correlación">
+
+    <h4>Dispersión PM25 vs CO</h4>
+    <img src="{{ imagenes.dispersion_co }}" alt="Dispersión CO">
+
+    <h4>Dispersión PM25 vs PM10</h4>
+    <img src="{{ imagenes.dispersion_pm10 }}" alt="Dispersión PM10">
+
+    <h4>Regresión PM25 → CO</h4>
+    <img src="{{ imagenes.regresion_co }}" alt="Regresión CO">
+
+    <h4>Regresión PM25 → PM10</h4>
+    <img src="{{ imagenes.regresion_pm10 }}" alt="Regresión PM10">
+
+    <h4>Promedio Anual de PM25</h4>
+    <img src="{{ imagenes.pm25_anual }}" alt="PM25 por año">
+
+    <h2>📅 Promedio Anual de PM25</h2>
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Año</th>
+                <th>PM25 Promedio</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for year, value in yearly_avg.items() %}
+            <tr>
+                <td>{{ year }}</td>
+                <td>{{ value }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>🧮 Matriz de Correlación</h2>
+    <table class="table table-bordered mt-3">
+        <thead class="table-secondary">
+            <tr>
+                <th></th>
+                {% for col in correlation_matrix.keys() %}
+                    <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for row_name, row in correlation_matrix.items() %}
+            <tr>
+                <th>{{ row_name }}</th>
+                {% for col in correlation_matrix.keys() %}
+                    <td>{{ row[col] }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
