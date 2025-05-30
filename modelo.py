@@ -62,7 +62,12 @@ def run_analysis():
         y_pred = model.predict(X_test)
 
         r2 = r2_score(y_test, y_pred)
-        r2_scores[t] = round(r2, 4)
+
+        # Solo guardar si es positivo o igual a 0
+        if r2 >= 0:
+            r2_scores[t] = round(r2, 4)
+        # Si quieres que muestre 0 en su lugar, puedes usar:
+        # r2_scores[t] = round(max(0, r2), 4)
 
         # Gráfico real vs predicho
         plt.figure(figsize=(6, 4))
